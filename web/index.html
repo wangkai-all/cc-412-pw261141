@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>指标突变归因工作台</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>指标突变归因工作台</h1>
+    <span class="metric">指标：下单转化率（checkout_conversion）· 星澜商城（虚构数据）</span>
+    <span class="version-badge" id="versionBadge">输入版本 …</span>
+    <span class="spacer"></span>
+    <button id="themeToggle" type="button">切换主题</button>
+  </header>
+
+  <div class="banner">
+    本页所有结论均为<strong>候选解释</strong>，由确定性分解生成、未经证实；每个候选都附有证据与「无法排除的可能」。
+    系统不调用任何外部模型。修订数据或口径后会产生新的输入版本，受影响的比较将按新版本重算，过期证据不会被复用。
+  </div>
+
+  <!-- 趋势 -->
+  <section class="card">
+    <h2>每日转化率（生效口径）</h2>
+    <div class="sub" id="chartSub">加载中…</div>
+    <div class="stat-row" id="statRow"></div>
+    <div class="chart-box" id="chartBox" tabindex="0" role="img"
+         aria-label="每日转化率折线图，可用左右方向键移动十字线，或展开下方数据表">
+      <svg id="chart" width="100%" viewBox="0 0 720 260" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+    <details id="seriesTableWrap">
+      <summary>数据表（与图中数值一致）</summary>
+      <div class="table-scroll"><table id="seriesTable"></table></div>
+    </details>
+  </section>
+
+  <!-- 候选解释 -->
+  <section class="card">
+    <h2>候选解释（未证实）</h2>
+    <div class="sub" id="reportMeta">—</div>
+    <div id="observedRow"></div>
+    <div id="impactSummary"></div>
+    <div id="candidates"></div>
+    <div class="caveat" id="reconcileNote"></div>
+  </section>
+
+  <!-- 操作 -->
+  <section class="card">
+    <h2>修订与重跑</h2>
+    <div class="sub">补齐缺口与撤回口径都会产生新的输入版本；依赖追踪器据此确定受影响比较并自动重跑。</div>
+    <div class="grid-2">
+      <div>
+        <h4>上游数据缺口</h4>
+        <div id="gapActions" class="note">加载中…</div>
+      </div>
+      <div>
+        <h4>口径变更</h4>
+        <div id="caliberActions" class="note">加载中…</div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <button id="rerunBtn" type="button" class="primary">重跑受影响比较（当前输入版本）</button>
+      <span class="note" id="rerunNote"></span>
+    </div>
+    <div id="jobs"></div>
+  </section>
+
+  <!-- 版本与缓存 -->
+  <section class="card">
+    <h2>输入版本与对照缓存</h2>
+    <div class="sub">所有证据表只增不改；修订产生新版本。缓存键 = (镜头, 输入版本, 代码版本, 参数)，
+      旧版本的键永远不会被新查询命中——过期证据在机制上不可复用，仅保留供审计。</div>
+    <div class="grid-2">
+      <div>
+        <h4>输入版本时间线</h4>
+        <table id="versionsTable"></table>
+      </div>
+      <div>
+        <h4>对照缓存台账</h4>
+        <div class="table-scroll"><table id="cacheTable"></table></div>
+      </div>
+    </div>
+    <h4 style="margin-top:14px">依赖图（镜头 → 数据存储）</h4>
+    <div id="depGraph" class="note"></div>
+  </section>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
